@@ -4,12 +4,17 @@ dotenv.config();
 
 const coinConfigs = [
   {
-    discordToken: process.env.CELO_DISCORD_TOKEN,
-    platformId: 'celo',
-    symbol: 'CELO',
+    discordToken: process.env.SLP_DISCORD_TOKEN,
+    platformId: 'smooth-love-potion',
+    symbol: 'SLP',
   },
   {
-    discordToken: process.env.BITCOIN_DISCORD_TOKEN,
+    discordToken: process.env.AXS_DISCORD_TOKEN,
+    platformId: 'axie-infinity',
+    symbol: 'AXS',
+  },
+  {
+    discordToken: process.env.BTC_DISCORD_TOKEN,
     platformId: 'bitcoin',
     symbol: 'BTC',
   },

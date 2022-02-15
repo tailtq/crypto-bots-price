@@ -32,7 +32,7 @@ async function loginToDiscord(coinConfigs) {
 async function updateBotDisplay(discordBot, isOverallPriceIncreasing, price, symbol) {
   let guild;
   try {
-    guild = await discordBot.guilds.fetch('886437883710431274');
+    guild = await discordBot.guilds.fetch(process.env.SERVER_ID);
   } catch (e) {
     if (e instanceof  DiscordAPIError && e.message === 'Missing Access') {
       console.log(`Missing access: ${discordBot.user.username}`);
@@ -44,7 +44,7 @@ async function updateBotDisplay(discordBot, isOverallPriceIncreasing, price, sym
   const nicknameColor = isOverallPriceIncreasing ? '#2ecc71' : '#ed4245';
   const shouldUpdateDisplay = (
     guild.me.nickname !== nickname ||
-    guild.me.roles.botRole.hexColor !== nicknameColor ||
+    (guild.me.roles.botRole && guild.me.roles.botRole.hexColor !== nicknameColor) ||
     discordBot.user.presence.activities.length === 0 ||
     discordBot.user.presence.activities[0].name !== activity
   );
