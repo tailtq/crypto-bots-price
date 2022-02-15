@@ -18,6 +18,16 @@ const coinConfigs = [
     platformId: 'bitcoin',
     symbol: 'BTC',
   },
+  {
+    discordToken: process.env.BNB_DISCORD_TOKEN,
+    platformId: 'binance-coin',
+    symbol: 'BNB',
+  },
+  {
+    discordToken: process.env.ETH_DISCORD_TOKEN,
+    platformId: 'ethereum',
+    symbol: 'ETH',
+  },
 ];
 
 export { coinConfigs };
