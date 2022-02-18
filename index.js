@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import { coinConfigs } from './src/config.js';
+import { getCoinConfigs } from './src/config.js';
 import { fetchCoinsDataAndChangeNickName, loginToDiscord } from './src/discord.js';
 
 function delay(time) {
@@ -10,7 +10,7 @@ function delay(time) {
 }
 
 // RUNNING
-const discordBots = await loginToDiscord(coinConfigs);
+const discordBots = await loginToDiscord(getCoinConfigs());
 
 while (true) {
   const totalRunning = discordBots.map(({ discordBot }) => discordBot.isReady()).filter(e => !!e);

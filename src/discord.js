@@ -24,12 +24,12 @@ async function loginToDiscord(coinConfigs) {
 
 /**
  * @param {Client} discordBot
- * @param {boolean} isOverallPriceIncreasing
- * @param {string} price
+ * @param {boolean} isPriceIncreasing
+ * @param {Object} price
  * @param {string} symbol
  * @returns {Promise<void>}
  */
-async function updateBotDisplay(discordBot, isOverallPriceIncreasing, price, symbol) {
+async function updateBotDisplay(discordBot, isPriceIncreasing, price, symbol) {
   let guild;
   try {
     guild = await discordBot.guilds.fetch(process.env.SERVER_ID);
@@ -39,9 +39,9 @@ async function updateBotDisplay(discordBot, isOverallPriceIncreasing, price, sym
       return;
     }
   }
-  const nickname = `${symbol} ${isOverallPriceIncreasing ? '⬈' : '⬊'} $${price['usd'].toString()}`;
-  const activity = `24h: ${price.usd_24h_change.toFixed(2)}%`;
-  const nicknameColor = isOverallPriceIncreasing ? '#2ecc71' : '#ed4245';
+  const nickname = `${symbol} ${isPriceIncreasing ? '⬈' : '⬊'} $${price.lastPrice.toString()}`;
+  const activity = `24h: ${price.priceChangePercent.toFixed(2)}%`;
+  const nicknameColor = isPriceIncreasing ? '#2ecc71' : '#ed4245';
   const shouldUpdateDisplay = (
     guild.me.nickname !== nickname ||
     (guild.me.roles.botRole && guild.me.roles.botRole.hexColor !== nicknameColor) ||
@@ -52,7 +52,7 @@ async function updateBotDisplay(discordBot, isOverallPriceIncreasing, price, sym
   if (shouldUpdateDisplay) {
     discordBot.user.setPresence({
       activities: [{
-        name: `24h: ${price.usd_24h_change.toFixed(2)}%`,
+        name: `24h: ${price.priceChangePercent.toFixed(2)}%`,
         type: 'WATCHING'
       }]
     });
@@ -81,8 +81,8 @@ async function fetchCoinsDataAndChangeNickName(discordBots) {
   await Promise.all(
     discordBots.map(async ({ discordBot, platformId, symbol }) => {
       const price = priceData[platformId];
-      const isOverallPriceIncreasing = price.usd_24h_change > 0;
-      await updateBotDisplay(discordBot, isOverallPriceIncreasing, price, symbol);
+      const isPriceIncreasing = price.lastPrice > price.openPrice;
+      await updateBotDisplay(discordBot, isPriceIncreasing, price, symbol);
     }),
   );
 }
